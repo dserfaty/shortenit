@@ -1,0 +1,24 @@
+# Docker Compose Configuration
+# visit https://docs.docker.com/compose/
+services:
+  # app service for your backend
+  app:
+    container_name: shortenit-server
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: mongodb://localhost:27017/shortenit
+      NODE_ENV: production
+    ports:
+      - '8080:8080'
+    depends_on:
+      - database
+
+  # start the mongodb service as container
+  database:
+    image: mongo:6.0
+    container_name: mongodb
+    restart: always
+    ports:
+      - '27017:27017'

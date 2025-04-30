@@ -1,9 +1,12 @@
 {
   "name": "shortenit-server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "dev": "nodemon app.ts",
+    "clean": "rm -Rf ./dist",
+    "build": "npm run clean && tsc",
+    "start": "node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
