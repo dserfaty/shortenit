@@ -1,6 +1,7 @@
 import ShortUrl, {IShortUrl} from "../models/shortUrl";
 import {DUPLICATE_URL_ERROR, INTERNAL_SERVER_ERROR, InternalErrorCode} from "../controllers/internalErrorCodes";
 import {DatabaseUpdateResult} from "./servicesUtils";
+import {createSlug} from "./slugService";
 
 export async function getShortUrlById(id: string): Promise<IShortUrl | null | undefined> {
     try {
@@ -16,14 +17,14 @@ export async function getShortUrlById(id: string): Promise<IShortUrl | null | un
     }
 }
 
-export async function getUrlById(id: string): Promise<string | null | undefined> {
+export async function getShortUrlBySlug(slug: string): Promise<IShortUrl | null | undefined> {
     try {
-        const url = await ShortUrl.findById(id);
+        const url = await ShortUrl.findOne({slug: slug});
         // console.log(url);
         if (!url) {
             return null;
         } else {
-            return url.url;
+            return url;
         }
     } catch (error) {
         console.error('An error occurred:', error);
@@ -46,9 +47,14 @@ export async function incrementVisits(id: string): Promise<number | null | undef
 
 export async function createUrl(url: String, uid: string | null, visits: number, date: Date): Promise<DatabaseUpdateResult<IShortUrl>> {
     try {
+        const slug = createSlug();
+        // TODO: here we could quickly verify or handle the extremely rare collision cases
+        //       for now if it happened, the service would fail on insertion and the user would have
+        //       to try again
         const shortUrl = new ShortUrl({
             url: url,
             uid: uid,
+            slug: slug,
             visits: visits,
             createdOn: date,
             updatedOn: date
@@ -59,6 +65,23 @@ export async function createUrl(url: String, uid: string | null, visits: number,
     } catch (error) {
         // console.error('An error occurred:', error);
         return new DatabaseUpdateResult<IShortUrl>(null, internalDatabaseError(error));
+    }
+}
+
+export async function getMostPopularByUid(uid: string, limit: number): Promise<IShortUrl[] | null | undefined> {
+    try {
+        const urls =
+            await ShortUrl.find({uid: uid})
+                .sort({visits: -1, createdOn: -1})
+                .limit(limit);
+        // console.log(url);
+        if (!urls) {
+            return null;
+        } else {
+            return urls;
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
     }
 }
 

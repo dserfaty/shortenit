@@ -5,9 +5,12 @@ import Login from "./components/Login.tsx";
 import {useEffect, useState} from "react";
 import AppHeader from "./components/AppHeader.tsx";
 import {APIToken} from "./actions/api.ts";
+import MyDashboard from "./components/MyDashboard.tsx";
+import {ComponentId} from "./config/config.ts";
 
 function App() {
     const [credentials, setCredentials] = useState({} as APIToken);
+    const [myDashboardVisible, setMyDashboardVisible] = useState(false);
 
     function isLoggedIn(): boolean {
         // console.log("state: ", state);
@@ -24,6 +27,7 @@ function App() {
     const logout = () => {
         localStorage.removeItem('credentials');
         setCredentials({} as APIToken);
+        setMyDashboardVisible(false);
     }
 
     // load credentials from local storage
@@ -38,10 +42,18 @@ function App() {
         }
     }, [credentials])
 
+    const showComponent = (id: ComponentId) => {
+        if (id == ComponentId.MyDashboard) {
+            setMyDashboardVisible(true);
+        } else {
+            setMyDashboardVisible(false);
+        }
+    }
+
     return (
         <div>
             <div>
-                <AppHeader credentials={credentials} logout={logout} />
+                <AppHeader credentials={credentials} logout={logout} showComponent={showComponent}/>
             </div>
             <div>
                 <img src={reactLogo} className="logo react" alt="React logo"/>
@@ -50,7 +62,12 @@ function App() {
             <div className="card">
                 <p className={"subtitle"}>Shorten It! A URL Shortener.</p>
                 {isLoggedIn() ?
-                    <URLCreateForm credentials={credentials}/> :
+                    <div>
+                        {myDashboardVisible ?
+                            <MyDashboard credentials={credentials}/> :
+                            <URLCreateForm credentials={credentials}/>
+                        }
+                    </div> :
                     <Login setCredentials={updateCredentials}/>
                 }
             </div>

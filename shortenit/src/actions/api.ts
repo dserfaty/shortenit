@@ -4,12 +4,17 @@ const API_BASE_URL = 'http://localhost:8080';
 export type ShortUrl = {
     id: string;
     url: string;
+    slug: string,
     shortUrl: string;
     uid: string | null;
     visits: number;
     createdOn: Date;
     updatedOn: Date;
 };
+
+export type ShortUrls = {
+    urls: ShortUrl[]
+}
 
 export type APIAccount = {
     id: string;
@@ -130,11 +135,28 @@ export async function createShortUrl(url: string, token: string): Promise<ShortU
     }
 }
 
+export async function getPopularUrls(token: string): Promise<ShortUrls | APIError> {
+    try {
+        // console.log(`=== API getShortUrls, token: ${token}`);
 
-/*
-    TODO: calls needed:
-        - get all urls (?userId=xxx) - if no user id return for all users otherwise only for the current user
-        - post new url
+        const callUrl = `${API_BASE_URL}/api/urls/popular`;
+        const {data} = await axios.get<ShortUrls>(
+            callUrl,
+            authenticatedHeaders(token)
+        );
 
- */
+        // console.log(`API Call to: ${callUrl} and token: ${token} result:`);
+        // console.log(JSON.stringify(data, null, 4));
+        // console.log('status: ', status);
 
+        return data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            // console.log('error message: ', error.message);
+            return error.response ? error.response.data as APIError : new APIError(error.message, "");
+        } else {
+            console.log('unexpected error: ', error);
+            return new APIError("An unexpected error occurred", "");
+        }
+    }
+}

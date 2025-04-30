@@ -14,7 +14,7 @@
 }
 
 a {
-  font-weight: 500;
+  font-weight: 400;
   color: #646cff;
   text-decoration: inherit;
 }
@@ -27,7 +27,7 @@ body {
   display: flex;
   place-items: normal;
   min-width: 500px;
-  min-height: 300vh;
+  /*min-height: 300vh;*/
 }
 
 h1 {
@@ -125,4 +125,15 @@ button:focus-visible {
 .appHeader {
   text-align: right;
   margin-bottom: 100px;
+}
+
+.headerLink {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.tableTitle {
+  color: #4ee875;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }

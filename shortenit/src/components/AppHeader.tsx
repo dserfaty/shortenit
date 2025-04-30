@@ -1,18 +1,18 @@
 import {useEffect, useState} from "react"
 import {Container, Link} from "@mui/material";
-// import {useGlobalState} from "./GlobalStateProvider";
 import {APIToken} from "../actions/api.ts";
+import {ComponentId} from "../config/config.ts";
 
 interface IAppHeaderProps {
     credentials: APIToken;
     logout: () => void;
+    showComponent: (id: ComponentId) => void;
 }
 
-function AppHeader({credentials, logout}: IAppHeaderProps) {
+function AppHeader({credentials, logout, showComponent}: IAppHeaderProps) {
     const [userName, setUserName] = useState<string>("");
-    // const {state} = useGlobalState();
     useEffect(() => {
-        console.log("header - credentials: ", credentials);
+        //console.log("header - credentials: ", credentials);
         if (credentials.account) {
             setUserName(credentials.account.userName)
         } else {
@@ -24,7 +24,29 @@ function AppHeader({credentials, logout}: IAppHeaderProps) {
         {userName != "" ?
             <div className="appHeader">
                 <span className={"shortenResultSuccess"}>Hello {userName}!</span>
-                <span>
+                <span className={"headerLink"}>
+                    <Link
+                        component="button"
+                        variant="body2"
+                        onClick={() => {
+                            showComponent(ComponentId.Home);
+                        }}
+                    >
+                      Shorten It!
+                    </Link>
+                </span>
+                <span className={"headerLink"}>
+                    <Link
+                        component="button"
+                        variant="body2"
+                        onClick={() => {
+                            showComponent(ComponentId.MyDashboard);
+                        }}
+                    >
+                      My Dashboard
+                    </Link>
+                </span>
+                <span className={"headerLink"}>
                     <Link
                         component="button"
                         variant="body2"
