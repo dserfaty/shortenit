@@ -2,6 +2,7 @@ import ShortUrl, {IShortUrl} from "../models/shortUrl";
 import {DUPLICATE_URL_ERROR, INTERNAL_SERVER_ERROR, InternalErrorCode} from "../controllers/internalErrorCodes";
 import {DatabaseUpdateResult} from "./servicesUtils";
 import {createSlug} from "./slugService";
+import logger from "./logger";
 
 export async function getShortUrlById(id: string): Promise<IShortUrl | null | undefined> {
     try {
@@ -13,7 +14,7 @@ export async function getShortUrlById(id: string): Promise<IShortUrl | null | un
             return url;
         }
     } catch (error) {
-        console.error('An error occurred:', error);
+        logger.error('An error occurred:', error);
     }
 }
 
@@ -27,7 +28,7 @@ export async function getShortUrlBySlug(slug: string): Promise<IShortUrl | null 
             return url;
         }
     } catch (error) {
-        console.error('An error occurred:', error);
+        logger.error('An error occurred:', error);
     }
 }
 
@@ -41,7 +42,7 @@ export async function incrementVisits(id: string): Promise<number | null | undef
             return result.visits;
         }
     } catch (error) {
-        console.error('An error occurred:', error);
+        logger.error('An error occurred:', error);
     }
 }
 
@@ -81,7 +82,7 @@ export async function getMostPopularByUid(uid: string, limit: number): Promise<I
             return urls;
         }
     } catch (error) {
-        console.error('An error occurred:', error);
+        logger.error('An error occurred:', error);
     }
 }
 
@@ -89,7 +90,7 @@ function internalDatabaseError(error: any): InternalErrorCode {
     if (error.code === 11000) {
         return DUPLICATE_URL_ERROR;
     } else {
-        console.error("Mongo Error: ", error)
+        logger.error("Mongo Error: ", error);
         return INTERNAL_SERVER_ERROR;
     }
 }

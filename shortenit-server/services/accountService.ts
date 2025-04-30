@@ -7,6 +7,7 @@ import {
 } from "../controllers/internalErrorCodes";
 import {DatabaseUpdateResult, hashPassword} from "./servicesUtils";
 import {IAccount} from "../models/accounts";
+import logger from "./logger";
 
 export async function getAccountById(id: string): Promise<IAccount | null> {
     try {
@@ -18,7 +19,7 @@ export async function getAccountById(id: string): Promise<IAccount | null> {
             return account;
         }
     } catch (error) {
-        console.error('An error occurred:', error);
+        logger.error('An error occurred:', error);
         return null;
     }
 }
@@ -33,7 +34,7 @@ export async function getAccountByUserName(userName: string): Promise<IAccount |
             return account;
         }
     } catch (error) {
-        console.error('An error occurred:', error);
+        logger.error('An error occurred:', error);
         return null;
     }
 }
@@ -52,17 +53,17 @@ export async function addNewAccount(newAccount: IAccount): Promise<DatabaseUpdat
                 doc => new DatabaseUpdateResult<IAccount>(doc, null)
             );
         } else {
-            console.error('Could not create account (hash password failed)');
+            logger.error('Could not create account (hash password failed)');
             return new DatabaseUpdateResult<IAccount>(null, CREATE_ACCOUNT_ERROR);
         }
     } catch (error) {
-        console.error('An error occurred:', error);
+        logger.error('An error occurred:', error);
         return new DatabaseUpdateResult<IAccount>(null, internalDatabaseError(error));
     }
 }
 
 function internalDatabaseError(error: any): InternalErrorCode {
-    console.error("Mongo Error: ", error)
+    logger.error("Mongo Error: ", error);
     if (error.code === 11000) {
         return DUPLICATE_USERNAME_ERROR;
     } else {

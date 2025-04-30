@@ -17,6 +17,7 @@ import {addNewAccount, getAccountById, getAccountByUserName} from "../services/a
 import {IAccount, ICreateToken} from "../models/accounts";
 import bcrypt from "bcrypt";
 import {makeJWT} from "../services/jwtService";
+import logger from "../services/logger";
 
 /**
  * Returns account id with the following json if successful
@@ -91,9 +92,6 @@ export async function getAccount(req: Request, res: Response) {
  * @param res express response
  */
 export async function createAccount(req: Request, res: Response) {
-    const requestData = req.body;
-    console.log(`got data: `, requestData.url)
-
     const now = new Date();
     const validationResult = validateNewAccount(req, now);
 
@@ -124,6 +122,7 @@ export async function createAccount(req: Request, res: Response) {
                 }
             }
         ).catch(err => {
+            logger.error('Error creating account: ', err);
             returnControllerError(INTERNAL_SERVER_ERROR, err);
         });
     }
@@ -150,19 +149,14 @@ export async function createAccount(req: Request, res: Response) {
  * @param res express response
  */
 export async function createToken(req: Request, res: Response) {
-    const requestData = req.body;
-    // console.log(`got data: `, requestData)
     const validationResult = validateCreateToken(req);
-
     if (validationResult instanceof InternalErrorCode) {
         returnControllerError(validationResult as InternalErrorCode, res);
     } else {
         const createTokenPayload = validationResult as ICreateToken;
-
         await getAccountByUserName(createTokenPayload.userName).then(
             account => {
                 if (account != null) {
-                    const hash = account.password;
                     if (bcrypt.compareSync(createTokenPayload.password, account.password)) {
                         const token = makeJWT(account);
                         res.json({
@@ -182,6 +176,7 @@ export async function createToken(req: Request, res: Response) {
                 }
             }
         ).catch(err => {
+            logger.error('Error loading account: ', err);
             returnControllerError(INVALID_CREDENTIALS, res);
         });
     }

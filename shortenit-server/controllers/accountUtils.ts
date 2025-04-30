@@ -11,7 +11,7 @@ import mongoose, {Document} from "mongoose";
 import {JwtPayload} from "jsonwebtoken";
 import {decodeJWT} from "../services/jwtService";
 import {getAccountById} from "../services/accountService";
-import {returnControllerError} from "./errorsUtils";
+import logger from '../services/logger';
 
 // borrowed from: https://dev.to/fromwentzitcame/username-and-password-validation-using-regex-2175
 // anything NOT alphanumeric, correct length (6-16)
@@ -92,7 +92,7 @@ export async function authenticate(req: Request): Promise<IAuthenticatedUser | I
                     return result;
                 }
             }).catch(error => {
-                console.error(`Error loading the account for id: ${id}`, error)
+                logger.error(`Error loading the account for id: ${id}`, error)
                 return INVALID_CREDENTIALS;
             });
         }

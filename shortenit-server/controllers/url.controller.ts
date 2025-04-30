@@ -17,6 +17,7 @@ import {
 import {isValidURL, isValidUrlId} from "./urlUtils";
 import {authenticate, IAuthenticatedUser} from "./accountUtils";
 import {isValidSlug} from "../services/slugService";
+import logger from "../services/logger";
 
 /**
  * Home path of the api - description
@@ -24,7 +25,8 @@ import {isValidSlug} from "../services/slugService";
  * @param res express response
  */
 export async function home(req: Request, res: Response) {
-    res.json({message: "Welcome to Shorten It API."});
+    const API_VERSION = process.env.API_VERSION as string;
+    res.json({message: `Welcome to Shorten It API (v: ${API_VERSION})`});
 }
 
 /**
@@ -103,7 +105,7 @@ export async function getShortUrl(req: Request, res: Response) {
             });
         }
     }).catch(err => {
-        console.error('Authorization error:', err)
+        //logger.error('Authorization error:', err)
         returnControllerError(INVALID_PERMISSIONS, res);
     });
 }
@@ -175,12 +177,12 @@ export async function getPopularUrls(req: Request, res: Response) {
                 } as PopularURLJson
                 res.json(json);
             }).catch(err => {
-                console.error('Could not load url - error:', err)
+                logger.error('Could not load url - error:', err)
                 returnPageNotFoundError(res);
             });
         }
     }).catch(err => {
-        console.error('Authorization error:', err)
+        //logger.error('Authorization error:', err)
         returnControllerError(INVALID_PERMISSIONS, res);
     });
 }
@@ -218,7 +220,7 @@ export async function createShortUrl(req: Request, res: Response) {
                     .then(result => {
                         if (!result.isError() && result.result != null) {
                             const doc = result.result;
-                            console.log('Document saved:', result.result)
+                            logger.info('Document saved:', result.result)
                             const id = result.result.id as string;
 
                             res.json({
@@ -243,7 +245,7 @@ export async function createShortUrl(req: Request, res: Response) {
             }
         }
     }).catch(err => {
-        console.error('Authorization error:', err)
+        //logger.error('Authorization error:', err)
         returnControllerError(INVALID_PERMISSIONS, res);
     });
 }
