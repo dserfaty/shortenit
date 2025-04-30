@@ -8,7 +8,7 @@ import Server from "./server";
 const app: Application = express();
 dotenv.config();
 
-const PORT: number = 8080;
+const PORT = parseInt(process.env.PORT as string, 10) || 8080
 const databaseUrl = process.env.DATABASE_URL as string;
 
 // Listen the server
