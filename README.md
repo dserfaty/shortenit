@@ -50,7 +50,7 @@ curl -X POST -H "Content-Type: application/json" http://localhost:8081/api/accou
 
 Deploy the client application:
 ```
-cd ../shorten-it
+cd ../shortenit
 docker-compose up -d
 ```
 
