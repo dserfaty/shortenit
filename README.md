@@ -9,6 +9,8 @@ The app has three components:
 - an API in node/express
 - a front end which is React app served by nginx
 
+The authentication is very simple and based on [JSON Web tokens](https://en.wikipedia.org/wiki/JSON_Web_Token).
+
 ## Notes
 For testing convenience, the api and mongo db app are in the same docker compose.
 
