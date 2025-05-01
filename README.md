@@ -26,9 +26,10 @@ Here is some of the work I did not have time to complete or make nice enough to 
 ## Installation
 For convenience, the mongodb server and the api server are packaged together.
 
-To start the app cd to the root directory and:
+To start the app clone the repository and:
 ```
-cd shorten-it-server
+cd shortenit
+cd shortenit-server
 docker-compose up -d
 ```
 
