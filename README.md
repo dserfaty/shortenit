@@ -41,11 +41,11 @@ curl "http://localhost:8081/"
 
 Create some users manually:
 ```
-curl -X POST -H "Content-Type: application/json" http://localhost:8081/api/accounts -d '{"userName": "admin", "password": "abcd1234#"}'
+curl -X POST -H "Content-Type: application/json" http://localhost:8081/api/accounts -d '{"userName": "demouser1", "password": "abcd1234#"}'
 > {"id":"6812ab223dfc1aaa80ed5f56","userName":"demouser1","createdOn":"2025-04-30T22:58:41.945Z","updatedOn":"2025-04-30T22:58:41.945Z"}%
 
-curl -X POST -H "Content-Type: application/json" http://localhost:8081/api/accounts -d '{"userName": "dserfaty", "password": "abcd1234#"}'
-> {"id":"6812abf93dfc1aaa80ed5f59","userName":"dserfaty2","createdOn":"2025-04-30T23:02:17.881Z","updatedOn":"2025-04-30T23:02:17.881Z"}%
+curl -X POST -H "Content-Type: application/json" http://localhost:8081/api/accounts -d '{"userName": "demouser2", "password": "abcd1234#"}'
+> {"id":"6812abf93dfc1aaa80ed5f59","userName":"demouser2","createdOn":"2025-04-30T23:02:17.881Z","updatedOn":"2025-04-30T23:02:17.881Z"}%
 ```
 
 Deploy the client application:
