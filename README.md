@@ -24,6 +24,7 @@ Here is some of the work I did not have time to complete or make nice enough to 
 - there are no unit/integration tests, although I wanted to have some as I believe they are essential and should be part of any good application. However I had to sacrifice those in order to have time to add more features for the demo. 
 - do more code review with regard to protecting against NoSQL attacks. At the moment the input is validated, but I would want to be more thorough in my review.
 - not everything is in configuration as it should. Mea maxima culpa!
+- handle tokens expiration (log out when getting a 401 result?)
  
 ## Installation
 For convenience, the mongodb server and the api server are packaged together.
