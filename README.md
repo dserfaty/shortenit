@@ -1,5 +1,7 @@
 # Shorten It!
 ## An Express/React Demo Application in Typescript
+
+This is sample demo application that lets users shorten urls.
  
 ## Components
 The app has three components:
