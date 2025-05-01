@@ -1,0 +1,11 @@
+# Docker Compose Configuration
+# visit https://docs.docker.com/compose/
+services:
+  # front end app
+  app:
+    container_name: shortenit
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - '5173:80'

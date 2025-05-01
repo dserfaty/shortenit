@@ -12,13 +12,13 @@ services:
     environment:
       DATABASE_URL: mongodb://mongodb:27017/shortenit
       NODE_ENV: production
-      PORT: 8080
-      API_BASE_URL: http://localhost:8080/api
-      REDIRECT_BASE_URL: http://localhost:8080
+      PORT: 8081
+      API_BASE_URL: http://localhost:8081/api
+      REDIRECT_BASE_URL: http://localhost:8081
       JWT_SECRET: ef329e1d53cd008888572fa29e0ac045be8e8af7e489b9fb3bab7f89785f010e805f4fb3b75464fced450fbf156342e54f78af866b1ee7603776d00de9005970eaa8ab7e8c42afdbcf5a4d2f08993a92e10d37ac064dfa0df11ee41d31596cc056163bf572173245137802f6a036d871cb3c21e5aa281b61a61c9316b842a4ce43bbc557a413d37722a0d171fd7833860203580ebf2316e100203e7a67dee9ff7259fe5e4f05b9d2608d7ac9b5c48b17d626e9e8898196f3991022548044416282a53a36715fdde37256725b06a09a73cf168458accf3546aaaae72b5d1a38ae82f15ca59aaa2617772b34c73ffb4de9e3236c22ba0ae99ff4a9b8468fb5dd76
       API_VERSION: 0.1
     ports:
-      - '8080:8080'
+      - '8081:8081'
     depends_on:
       - database
 

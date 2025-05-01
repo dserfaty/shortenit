@@ -9,7 +9,7 @@ import logger from './services/logger';
 const app: Application = express();
 dotenv.config();
 
-const PORT = parseInt(process.env.PORT as string, 10) || 8080
+const PORT = parseInt(process.env.PORT as string, 10) || 8081
 const DATABASE_URL = process.env.DATABASE_URL as string;
 
 // Listen the server

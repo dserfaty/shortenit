@@ -1,37 +1,70 @@
 # Shorten It!
-## An Express/React Typescript Demo Application
+## An Express/React Demo Application in Typescript
  
 ## Components
-- MongoDB database
-- API in node/express
-- Front End: React app
+The app has three components:
+- a MongoDB database
+- an API in node/express
+- a front end which is React app served by nginx
 
 ## Notes
+For testing convenience, the api and mongo db app are in the same docker compose.
 
 ## Future work
-- have the database be created/migrated by a separate process that will apply migrations rather than manually as here (for larger codebases I favor migrations being applied separately from the micro-service itself so we can better control when to apply them or rollback if needed, especially since we could be running several versions concurrently during rolling deployments or testing features
+Here is some of the work I did not have time to complete or make nice enough to be production ready.
+
 - allow loading all of a user’s urls, but it would require api pagination
+- allow editing the slug, it would not be hard because the database structure already allows for easy update as the field is unique.
 - CORS options should allow only origins relevant to the clients instead of * as it is now
 - styling | layout is very basic right now but this can take a lot of time to make right - sorry… :)
-- there are unit/integration tests, I believe they are essential and should be part of any good application but this is just a prototype 
-- do more code review with regard to protecting against NoSQL attacks. At the moment the input is validated, but I would want to be more thorough in my review. 
-
+- there are no unit/integration tests, although I wanted to have some as I believe they are essential and should be part of any good application. However I had to sacrifice those in order to have time to add more features for the demo. 
+- do more code review with regard to protecting against NoSQL attacks. At the moment the input is validated, but I would want to be more thorough in my review.
+- not everything is in configuration as it should. Mea maxima culpa!
+ 
 ## Installation
 For convenience, the mongodb server and the api server are packaged together.
 
 To start the app cd to the root directory and:
-
 ```
 cd shorten-it-server
 docker-compose up -d
 ```
 
-Create some users:
+Verify that the api is running:
 ```
-curl -X POST -H "Content-Type: application/json" http://localhost:8080/api/accounts -d '{"userName": "admin", "password": "abcd1234#"}'
-> {"id":"6812ab223dfc1aaa80ed5f56","userName":"admin","createdOn":"2025-04-30T22:58:41.945Z","updatedOn":"2025-04-30T22:58:41.945Z"}%
-
-curl -X POST -H "Content-Type: application/json" http://localhost:8080/api/accounts -d '{"userName": "dserfaty", "password": "abcd1234#"}'
-> {"id":"6812abf93dfc1aaa80ed5f59","userName":"dserfaty","createdOn":"2025-04-30T23:02:17.881Z","updatedOn":"2025-04-30T23:02:17.881Z"}%
+curl "http://localhost:8081/"
+> {"message":"Welcome to Shorten It API (v: 0.1)"}%
 ```
 
+Create some users manually:
+```
+curl -X POST -H "Content-Type: application/json" http://localhost:8081/api/accounts -d '{"userName": "admin", "password": "abcd1234#"}'
+> {"id":"6812ab223dfc1aaa80ed5f56","userName":"demouser1","createdOn":"2025-04-30T22:58:41.945Z","updatedOn":"2025-04-30T22:58:41.945Z"}%
+
+curl -X POST -H "Content-Type: application/json" http://localhost:8081/api/accounts -d '{"userName": "dserfaty", "password": "abcd1234#"}'
+> {"id":"6812abf93dfc1aaa80ed5f59","userName":"dserfaty2","createdOn":"2025-04-30T23:02:17.881Z","updatedOn":"2025-04-30T23:02:17.881Z"}%
+```
+
+Deploy the client application:
+```
+cd ../shorten-it
+docker-compose up -d
+```
+
+And bring up the UI in a browser by going to:
+```
+http://localhost:5173/
+```
+
+And test the application. You should be able to :
+- login with demouser1/abcd1234#
+- shorten some urls and copy them
+- paste each urls in another tab several times
+- go to the dashboard and see the ranked list of links for your account
+- logout and try with the second demo user
+
+
+Happy testing!
+
+**Dan**
+ 
