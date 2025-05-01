@@ -68,5 +68,4 @@ And test the application. You should be able to :
 
 Happy testing!
 
-**Dan**
  
