@@ -25,6 +25,7 @@ Here is some of the work I did not have time to complete or make nice enough to 
 - do more code review with regard to protecting against NoSQL attacks. At the moment the input is validated, but I would want to be more thorough in my review.
 - not everything is in configuration as it should. Mea maxima culpa!
 - handle tokens expiration (log out when getting a 401 result?)
+- authentication should be handled in a central way (filter) instead of in each api call
  
 ## Installation
 For convenience, the mongodb server and the api server are packaged together.
